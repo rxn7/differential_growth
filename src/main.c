@@ -1,9 +1,12 @@
 #include "app.h"
 
-int main() {
+int main(void) {
     struct App app;
 
-    app_init(&app);
+    if(!app_init(&app)) {
+        return 1;
+    }
+
     app_run(&app);
     app_free(&app);
 }

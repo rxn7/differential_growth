@@ -1,11 +1,12 @@
 #!/bin/sh
 
 cmake --build build/debug
-cp build/debug/compile_commands.json .
 
 if [ $? -ne 0 ]; then
 exit
 fi
+
+cp build/debug/compile_commands.json .
 
 pushd build/debug >/dev/null
 ./differential_growth

@@ -1,7 +1,13 @@
+#include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
+#include <SDL3/SDL_timer.h>
+#include <SDL3/SDL_init.h>
+#include <SDL3/SDL_render.h>
 
 #include "app.h"
-#include "SDL3/SDL_timer.h"
+#include "SDL3/SDL_video.h"
+#include "render.h"
 
 static void app_update(struct App *app, float delta_time);
 static void app_render(struct App *app);
@@ -12,7 +18,7 @@ bool app_init(struct App *app) {
         return false;
     }
 
-    app->window = SDL_CreateWindow("Differential Growth", 640, 480, 0);
+    app->window = SDL_CreateWindow("Differential Growth", 640, 640, SDL_WINDOW_RESIZABLE);
     if(!app->window) {
         fprintf(stderr, "Could not create window: %s", SDL_GetError());
         return false;
@@ -23,13 +29,19 @@ bool app_init(struct App *app) {
         fprintf(stderr, "Could not create renderer: %s", SDL_GetError());
         return false;
     }
+    SDL_SetRenderLogicalPresentation(app->renderer, 640, 640, SDL_LOGICAL_PRESENTATION_LETTERBOX);
+
+    srand(time(nullptr));
 
     app->is_running = true;
+    simulation_init(&app->simulation);
 
     return true; 
 } 
 
 void app_free(struct App *app) {
+    simulation_free(&app->simulation);
+
     SDL_DestroyRenderer(app->renderer);
     SDL_DestroyWindow(app->window);
     SDL_Quit();
@@ -56,11 +68,14 @@ void app_run(struct App *app) {
 }
 
 static void app_update(struct App *app, float delta_time) {
+    simulation_step(&app->simulation);
 }
 
 static void app_render(struct App *app) {
     SDL_SetRenderDrawColor(app->renderer, 0, 0, 0, 255);
     SDL_RenderClear(app->renderer);
+
+    render_particles(app->simulation.head, app->renderer);
 
     SDL_RenderPresent(app->renderer);
 }
