@@ -19,7 +19,8 @@ file(GLOB_RECURSE PROJECT_SOURCES
 add_executable(differential_growth ${PROJECT_SOURCES})
 
 add_subdirectory(vendor/SDL3 EXCLUDE_FROM_ALL)
-target_link_libraries(differential_growth PRIVATE SDL3::SDL3 m)
+add_subdirectory(vendor/SDL3_gfx EXCLUDE_FROM_ALL)
+target_link_libraries(differential_growth PRIVATE SDL3::SDL3 SDL3_gfx_Static m)
 
 set(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")

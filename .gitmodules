@@ -2,3 +2,10 @@
 	path = vendor/SDL3
 	url = https://github.com/libsdl-org/SDL.git
 	branch = release-3.2.x
+[submodule "vendor/SDL3_gfx"]
+	path = vendor/SDL3_gfx
+	url = https://github.com/sabdul-khabir/SDL3_gfx
+[submodule "vendor/SDL3_ttf"]
+	path = vendor/SDL3_ttf
+	url = https://github.com/libsdl-org/SDL_ttf
+	branch = release-3.2.x

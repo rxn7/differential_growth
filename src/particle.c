@@ -4,7 +4,7 @@
 #include "particle.h"
 #include "SDL3/SDL_render.h"
 
-struct Particle *particle_create(float x, float y) {
+struct Particle *particle_create(struct Vec2 position) {
 	struct Particle *p = malloc(sizeof(struct Particle));
 
 	if(!p) {
@@ -15,8 +15,12 @@ struct Particle *particle_create(float x, float y) {
 	p->prev = nullptr;
 	p->next = nullptr;
 
-	p->x = x;
-	p->y = y;
+	p->position = position;
+	p->velocity = (struct Vec2){0.0f, 0.0f};
+	p->acceleration = (struct Vec2){
+		1.0f * (rand() / (float)RAND_MAX * 2.0 - 1),
+		1.0f * (rand() / (float)RAND_MAX * 2.0 - 1)
+	};
 
 	return p;
 }
@@ -59,7 +63,15 @@ void particle_insert_after(struct Particle *p, struct Particle *after) {
 	after->next = p;
 }
 
+void particle_update(struct Particle *p, float dt) {
+	p->velocity.x += p->acceleration.x * dt;
+	p->velocity.y += p->acceleration.y * dt;
+
+	p->position.x += p->velocity.x * dt;
+	p->position.y += p->velocity.y * dt;
+}
+
 void particle_draw(struct Particle *p, SDL_Renderer *renderer) {
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-	SDL_RenderPoint(renderer, p->x, p->y);
+	SDL_RenderPoint(renderer, p->position.x, p->position.y);
 }

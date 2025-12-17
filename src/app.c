@@ -9,7 +9,7 @@
 #include "SDL3/SDL_video.h"
 #include "render.h"
 
-static void app_update(struct App *app, float delta_time);
+static void app_update(struct App *app, float dt);
 static void app_render(struct App *app);
 
 bool app_init(struct App *app) { 
@@ -67,8 +67,8 @@ void app_run(struct App *app) {
     }
 }
 
-static void app_update(struct App *app, float delta_time) {
-    simulation_step(&app->simulation);
+static void app_update(struct App *app, float dt) {
+    simulation_step(&app->simulation, dt);
 }
 
 static void app_render(struct App *app) {
