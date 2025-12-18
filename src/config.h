@@ -1,6 +1,6 @@
 #pragma once
 
-#define MAX_PARTICLE_COUNT 5000
+#define MAX_PARTICLE_COUNT 3000
 #define START_PARTICLE_COUNT 80
 #define CIRCLE_RADIUS 50
 
